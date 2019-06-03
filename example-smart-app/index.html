@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>SMART on FHIR resource viewer</title>
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-    <title>shrey94 Example-SMART-App</title>
 
     <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
+    <link rel='stylesheet' type='text/css' href='./src/css/index.css'>
     <!--
       Temporarily disable cerner-smart-embeddable-lib
       <link rel='stylesheet' type='text/css' href='./lib/css/cerner-smart-embeddable-lib-1.0.0.min.css'>
     -->
   </head>
   <body>
+    <header id="header">
+      <h1>Example-SMART-App</h1>
+    </header>
     <div id='errors'>
     </div>
     <div id="loading" class="spinner">
@@ -19,77 +24,101 @@
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
-    <div id='holder' >
-      <h2>Example-SMART-App</h2>
+    <main>
+      <div id='holder' >
+        <span>
+          Displays the results of an API call to the FHIR resource
+          server for a Patient and their Observations, both formatted
+          information and raw JSON. The raw JSON can be copied and pasted
+          into a JSON validator such as 
+          <a href="https://jsonlint.com/"> JSONLint </a> to format
+          the response into a more readable structure.          
+        </span>
 
-      <h2>Patient Resource</h2>
-      <table>
-        <tr>
-          <th>First Name:</th>
-          <td id='fname'></td>
-        </tr>
-        <tr>
-          <th>Last Name:</th>
-          <td id='lname'></td>
-        </tr>
-        <tr>
-          <th>Gender:</th>
-          <td id='gender'></td>
-        </tr>
-        <tr>
-          <th>Date of Birth:</th>
-          <td id='birthdate'></td>
-        </tr>
-      </table>
-      <h2>Observation Resource</h2>
-      <table>
-        <tr>
-          <th>Height:</th>
-          <td id='height'></td>
-        </tr>
-        <tr>
-          <th>Systolic Blood Pressure:</th>
-          <td id='systolicbp'></td>
+        <h2>Patient Resource</h2>
+        <table>
+          <tr>
+            <th>First Name:</th>
+            <td id='fname'></td>
+          </tr>
+          <tr>
+            <th>Last Name:</th>
+            <td id='lname'></td>
+          </tr>
+          <tr>
+            <th>Gender:</th>
+            <td id='gender'></td>
+          </tr>
+          <tr>
+            <th>Date of Birth:</th>
+            <td id='birthdate'></td>
+          </tr>
+        </table>
+        <h3>FHIR API response for Patient Resource</h3>
+        <span>
+          The below will be valid JSON and should contain one 
+          deeply nested JavaScript object.
+        </span>
+        <br/>
+        <span id='patient-json'>
+        </span>
+        <h2>Observation Resource</h2>
+        <table>
+          <tr>
+            <th>Height:</th>
+            <td id='height'></td>
+          </tr>
+          <tr>
+            <th>Systolic Blood Pressure:</th>
+            <td id='systolicbp'></td>
 
-        </tr>
-        <tr>
-          <th>Diastolic Blood Pressure:</th>
-          <td id='diastolicbp'></td>
-        </tr>
-        <tr>
-          <th>LDL:</th>
-          <td id='ldl'></td>
-        </tr>
-        <tr>
-          <th>HDL:</th>
-          <td id='hdl'></td>
-        </tr>
-      </table>
-    </div>
-    <!-- Required JS files to enable this page to embed within an MPage -->
-    <!--
-      Temporarily disable cerner-smart-embeddable-lib
-      <script src='https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js'></script>
-      <script src='./lib/js/cerner-smart-embeddable-lib-1.0.0.min.js'></script>
-    -->
+          </tr>
+          <tr>
+            <th>Diastolic Blood Pressure:</th>
+            <td id='diastolicbp'></td>
+          </tr>
+          <tr>
+            <th>LDL:</th>
+            <td id='ldl'></td>
+          </tr>
+          <tr>
+            <th>HDL:</th>
+            <td id='hdl'></td>
+          </tr>
+        </table>
+        <h3>FHIR API response for Observation Resource</h3>
+        <span>
+          The below will be valid JSON and should contain an array
+          of JavaScript objects, each representing an observation.
+        </span>
+        <br/>
+        <span id='observation-json'>
+        </span>
+      </div>
+      <!-- Required JS files to enable this page to embed within an MPage -->
+      <!--
+        Temporarily disable cerner-smart-embeddable-lib
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js'></script>
+        <script src='./lib/js/cerner-smart-embeddable-lib-1.0.0.min.js'></script>
+      -->
 
-    <!-- Application-level javascript-->
-    <script src='./src/js/example-smart-app.js'></script>
+      <!-- Application-level javascript-->
+      <script src='./src/js/example-smart-app.js'></script>
 
-    <!-- FHIR Client JS Library -->
-    <script src='./lib/js/fhir-client-v0.1.12.js'></script>
+      <!-- FHIR Client JS Library -->
+      <script src='./lib/js/fhir-client-v0.1.12.js'></script>
 
-    <!-- Prevent session bleed caused by single threaded embedded browser and sessionStorage API -->
-    <!-- https://github.com/cerner/fhir-client-cerner-additions -->
-    <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <!-- Prevent session bleed caused by single threaded embedded browser and sessionStorage API -->
+      <!-- https://github.com/cerner/fhir-client-cerner-additions -->
+      <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    </main>
     <script>
       extractData().then(
         //Display Patient Demographics and Observations if extractData was success
         function(p) {
           drawVisualization(p);
         },
-
         //Display 'Failed to call FHIR Service' if extractData failed
         function() {
           $('#loading').hide();
